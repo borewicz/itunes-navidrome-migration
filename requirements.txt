@@ -2,8 +2,9 @@ beautifulsoup4==4.11.1
 bs4==0.0.1
 certifi==2022.12.7
 charset-normalizer==2.1.1
+demoji
 idna==3.4
-lxml==4.9.2
+lxml
 PyInputPlus==0.2.12
 PySimpleValidate==0.2.12
 requests==2.28.1
