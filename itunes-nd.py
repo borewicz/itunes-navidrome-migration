@@ -77,7 +77,10 @@ def insert_playlist(playlist_name, user_id):
     conn = sqlite3.connect(nddb_path)
     cur = conn.cursor()
     cur.execute('''SELECT id FROM playlist WHERE name = ?''', (playlist_name,))
-    playlist_id = cur.fetchone()
+    try:
+        playlist_id, = cur.fetchone()
+    except TypeError:
+        playlist_id = None
 
     if playlist_id is None:
         # navidrome playlist id is 22 character long and doesn't contain '-'
@@ -86,7 +89,7 @@ def insert_playlist(playlist_name, user_id):
         conn.commit()
 
     conn.close()
-    return playlist_id[0]
+    return playlist_id 
 
 def insert_playlist_track(id, playlist_id, track_id):
     conn = sqlite3.connect(nddb_path)
