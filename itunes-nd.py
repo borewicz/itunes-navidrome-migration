@@ -98,6 +98,14 @@ def insert_playlist_track(id, playlist_id, track_id):
     conn.commit()
     conn.close()
 
+def update_playlists_info():
+    conn = sqlite3.connect(nddb_path)
+    cur = conn.cursor()
+    cur.execute('''UPDATE playlist SET size = (SELECT SUM(size) FROM playlist_tracks pl LEFT JOIN media_file mp3 ON pl.media_file_id=mp3.id WHERE playlist_id=playlist.id)''')
+    cur.execute('''UPDATE playlist SET duration = (SELECT SUM(duration) FROM playlist_tracks pl LEFT JOIN media_file mp3 ON pl.media_file_id=mp3.id WHERE playlist_id=playlist.id)''')
+    conn.commit()
+    conn.close()
+
 def main():
     if len(sys.argv) != 3:
         print("Usage: python itunes-nd.py <navidrome_db_path> <iTunes_db_path>")
@@ -259,6 +267,7 @@ def main():
     write_to_annotation(userID, albums, 'album')
     write_dates(files, 'media_file')
     write_dates(albums, 'album')
+    update_playlists_info()
 
 if __name__ == "__main__":
     main()
